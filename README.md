@@ -1,27 +1,19 @@
 # Paradox of Choice in Retail Selection
 
-**Between-subjects experiment on how assortment size affects decision time, purchase behavior, and post-choice emotions** — designed in Qualtrics, analyzed in R.
+**Decision Time, Purchase Behavior, and Post-Choice Emotions** — a between-subjects experiment designed in Qualtrics and analyzed in R across 71 participants.
 
 [View the live analysis report](https://quudus.github.io/paradox-of-choice-portfolio)
 
 ## What the experiment tested
 
-Does having more choices actually make decisions harder? 74 participants were randomly assigned to one of two conditions:
+Two groups, one question — does having more choices make decisions harder?
 
-- **4-option group** — chose from a small product assortment
-- **16-option group** — chose from a larger product assortment
-
-After deciding, participants answered questions on satisfaction, confidence, and regret.
-
-## What was measured
-
-| Variable | What it captures |
+| Group | Condition |
 |---|---|
-| Decision Time (seconds) | How long the participant spent on the choice page before submitting |
-| Purchase | Whether they selected a product (1) or walked away (0) |
-| Satisfaction (1–5) | How satisfied they were with their experience |
-| Confidence (1–5) | How confident they felt in their decision |
-| Regret (1–5, purchasers only) | Whether they felt another option might have been better |
+| 4-option group | Chose from a small product assortment |
+| 16-option group | Chose from a larger product assortment |
+
+After deciding, participants rated their satisfaction, confidence, and regret.
 
 ## Key findings
 
@@ -29,26 +21,16 @@ After deciding, participants answered questions on satisfaction, confidence, and
 - **Purchase behavior did not differ significantly** between the two groups — having 16 options didn't stop people from buying.
 - **No significant difference in satisfaction, confidence, or regret** — post-choice emotions were similar regardless of how many options were available.
 
-## Statistical tests run
+## Tools used
 
-5 tests in R across the outcome variables:
-
-- Welch t-test (decision time)
-- Mann-Whitney U test (decision time, non-parametric check)
-- Two-proportion z-test (purchase rate)
-- ANOVA (satisfaction, confidence, regret)
-
-## Tools and workflow
-
-- **Qualtrics** — survey design, Randomizer block for automated random assignment
+- **Qualtrics** — survey design and Randomizer block for automated random assignment
 - **Excel** — data cleaning using the 1.5×IQR method to remove outliers
-- **R** — statistical analysis and report generation (R Markdown)
-- Data: 74 participants collected; 71 retained after outlier removal
+- **R** — 5 statistical tests (Welch t-test, Mann-Whitney U, two-proportion z-test, ANOVA) and report generation
 
 ## Files in this repo
 
 | File | What it is |
 |---|---|
-| `index.html` | Full analysis report (rendered from R Markdown) |
+| `index.html` | Full analysis report rendered from R Markdown |
 
-Raw data and the .Rmd source are available on request.
+The interactive report is published on GitHub Pages — see the link above.
