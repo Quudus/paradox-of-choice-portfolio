@@ -1,0 +1,707 @@
+<title>Paradox of Choice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,700;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+
+<style>
+/*
+  Layout: single content column, max 880px
+  Type:   Fraunces (display) + Inter (body) + JetBrains Mono (data)
+  Color:  navy accent / warm off-white light / dark charcoal dark
+*/
+
+:root {
+  --bg: #f5f4f0;
+  --surface: #ffffff;
+  --fg: #191816;
+  --fg-muted: #6a6560;
+  --accent: #1d3f8a;
+  --accent-lt: #eef2fc;
+  --border: #e2dfd8;
+  --sig: #166534;
+  --sig-bg: #f0fdf4;
+  --sig-bd: #86efac;
+  --ns: #6b7280;
+  --ns-bg: #f3f4f6;
+  --ns-bd: #d1d5db;
+  --g4-text: #0369a1;
+  --g4-bg: #f0f9ff;
+  --g4-bd: #bae6fd;
+  --g16-text: #92400e;
+  --g16-bg: #fffbeb;
+  --g16-bd: #fde68a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111009;
+    --surface: #1b1a17;
+    --fg: #f0ece3;
+    --fg-muted: #96908a;
+    --accent: #7096e8;
+    --accent-lt: #1a2540;
+    --border: #2c2a25;
+    --sig: #4ade80;
+    --sig-bg: #052e16;
+    --sig-bd: #166534;
+    --ns: #6b7280;
+    --ns-bg: #1b1a17;
+    --ns-bd: #374151;
+    --g4-text: #7dd3fc;
+    --g4-bg: #0c2240;
+    --g4-bd: #1e3a5f;
+    --g16-text: #fcd34d;
+    --g16-bg: #2a1c00;
+    --g16-bd: #78350f;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111009;
+  --surface: #1b1a17;
+  --fg: #f0ece3;
+  --fg-muted: #96908a;
+  --accent: #7096e8;
+  --accent-lt: #1a2540;
+  --border: #2c2a25;
+  --sig: #4ade80;
+  --sig-bg: #052e16;
+  --sig-bd: #166534;
+  --ns: #6b7280;
+  --ns-bg: #1b1a17;
+  --ns-bd: #374151;
+  --g4-text: #7dd3fc;
+  --g4-bg: #0c2240;
+  --g4-bd: #1e3a5f;
+  --g16-text: #fcd34d;
+  --g16-bg: #2a1c00;
+  --g16-bd: #78350f;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+.page {
+  max-width: 880px;
+  margin: 0 auto;
+}
+
+/* TYPOGRAPHY */
+.display {
+  font-family: 'Fraunces', Georgia, serif;
+  font-size: clamp(2rem, 5.5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+  margin-bottom: 1.2rem;
+}
+
+p { max-width: 64ch; }
+p + p { margin-top: 0.85rem; }
+
+strong { font-weight: 600; }
+
+/* HEADER */
+.header {
+  padding: 3.5rem 0 2.5rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2.5rem;
+}
+
+.meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.2rem;
+  margin-bottom: 1.4rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-muted);
+}
+
+.meta-sep { opacity: 0.4; }
+
+.tagline {
+  margin-top: 1.1rem;
+  font-size: 1rem;
+  color: var(--fg-muted);
+  max-width: 60ch;
+  line-height: 1.6;
+}
+
+/* STATS ROW */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--border);
+  gap: 1px;
+  margin-bottom: 3rem;
+}
+
+@media (max-width: 560px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+}
+
+.stat-cell {
+  background: var(--surface);
+  padding: 1.2rem 1.3rem;
+}
+
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.35rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-lbl {
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  line-height: 1.3;
+}
+
+/* SECTIONS */
+.section {
+  padding-bottom: 2.75rem;
+  margin-bottom: 2.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.section:last-of-type { border-bottom: none; }
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (max-width: 620px) {
+  .two-col { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* SURVEY FLOW */
+.flow {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  font-size: 0.78rem;
+}
+
+.flow-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.6rem 0.85rem;
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.flow-block.top { border-left: 3px solid var(--accent); }
+.flow-block.rand { border-left: 3px solid #8b5cf6; color: var(--fg-muted); font-style: italic; }
+.flow-block.bot { border-left: 3px solid var(--accent); }
+
+.flow-arrow {
+  text-align: center;
+  color: var(--fg-muted);
+  line-height: 1;
+  padding: 0.18rem 0;
+  font-size: 0.82rem;
+}
+
+.flow-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin: 0.3rem 0;
+}
+
+.flow-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.group-label {
+  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  font-weight: 600;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.group-label.g4 {
+  color: var(--g4-text);
+  background: var(--g4-bg);
+  border: 1px solid var(--g4-bd);
+}
+
+.group-label.g16 {
+  color: var(--g16-text);
+  background: var(--g16-bg);
+  border: 1px solid var(--g16-bd);
+}
+
+.flow-sub {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+}
+
+.flow-note {
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  margin-top: 0.6rem;
+  line-height: 1.45;
+}
+
+/* PIPELINE */
+.pipeline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 1.2rem;
+}
+
+.pipe-step {
+  flex: 1;
+  min-width: 80px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.55rem 0.8rem;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.pipe-step span {
+  display: block;
+  font-weight: 400;
+  font-size: 0.68rem;
+  color: var(--fg-muted);
+  margin-top: 0.15rem;
+}
+
+.pipe-arr {
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  padding: 0 0.25rem;
+  flex-shrink: 0;
+}
+
+.pipe-note {
+  font-size: 0.82rem;
+  color: var(--fg-muted);
+}
+
+/* ANALYSIS LIST */
+.analysis-list { display: flex; flex-direction: column; gap: 0.65rem; }
+
+.aitem {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  align-items: start;
+  padding: 0.9rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--border);
+  border-radius: 0 6px 6px 0;
+}
+
+.aitem.sig { border-left-color: var(--sig); }
+
+.aname {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.15rem;
+}
+
+.atest {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--fg-muted);
+  margin-bottom: 0.3rem;
+}
+
+.awhy {
+  font-size: 0.75rem;
+  color: var(--fg-muted);
+  line-height: 1.4;
+  max-width: 52ch;
+}
+
+.aside {
+  text-align: right;
+  flex-shrink: 0;
+  min-width: 85px;
+}
+
+.aside-stat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  color: var(--fg-muted);
+  margin-bottom: 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.18rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge.yes {
+  background: var(--sig-bg);
+  color: var(--sig);
+  border: 1px solid var(--sig-bd);
+}
+
+.badge.no {
+  background: var(--ns-bg);
+  color: var(--ns);
+  border: 1px solid var(--ns-bd);
+}
+
+/* FINDING BOX */
+.finding {
+  background: var(--accent-lt);
+  border-left: 4px solid var(--accent);
+  border-radius: 0 8px 8px 0;
+  padding: 1.4rem 1.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.finding-stat {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.finding p {
+  color: var(--fg);
+  font-size: 0.9rem;
+  max-width: 58ch;
+}
+
+.finding-sub {
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+  max-width: 62ch;
+}
+
+/* CONTRIBUTIONS */
+.contrib-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.contrib-list li {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  gap: 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  align-items: start;
+}
+
+.cbullet {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-lt);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cbullet::after {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* TOOLS */
+.tools { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+
+.tool {
+  padding: 0.3rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fg-muted);
+  background: var(--surface);
+}
+
+/* FOOTER */
+.footer {
+  padding: 2rem 0 3rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  font-size: 0.73rem;
+  color: var(--fg-muted);
+}
+</style>
+
+<div class="page">
+
+  <header class="header">
+    <div class="meta-row">
+      <span>STAT 5604 · Temple University</span>
+      <span class="meta-sep">·</span>
+      <span>Fall 2026</span>
+      <span class="meta-sep">·</span>
+      <span>Quudus Oladosu</span>
+    </div>
+    <h1 class="display">Paradox of Choice<br>in Retail Selection</h1>
+    <p class="tagline">A controlled experiment testing whether larger product assortments slow decision-making, reduce purchase intent, and drive post-choice regret — deployed in Qualtrics, analyzed in R.</p>
+  </header>
+
+  <div class="stats-row">
+    <div class="stat-cell">
+      <div class="stat-num">71</div>
+      <div class="stat-lbl">Participants after outlier removal</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">5</div>
+      <div class="stat-lbl">Response variables measured</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">t = 4.80</div>
+      <div class="stat-lbl">Decision time test statistic</div>
+    </div>
+    <div class="stat-cell">
+      <div class="stat-num">p &lt; .001</div>
+      <div class="stat-lbl">Significance level achieved</div>
+    </div>
+  </div>
+
+  <!-- DESIGN -->
+  <div class="section">
+    <div class="section-label">Research Design</div>
+    <div class="two-col">
+      <div>
+        <p><strong>Research question:</strong> Does the number of product options offered to a shopper affect how long they take to decide, whether they buy, and how satisfied, confident, and regret-free they feel afterward?</p>
+        <p style="margin-top:0.85rem;">A one-factor, two-level between-subjects experiment compared a curated assortment of <strong>4 options</strong> versus a larger assortment of <strong>16 options</strong>. Participants were randomly assigned to one condition and completed a simulated retail selection task with no awareness of the other condition.</p>
+        <p style="margin-top:0.85rem;">Five response variables were measured: decision time in seconds, purchase behavior (binary), and satisfaction, confidence, and post-choice regret on 1–5 Likert scales. Because the design has only one factor, no interaction term applies.</p>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:0.8rem;">Qualtrics Survey Flow</div>
+        <div class="flow">
+          <div class="flow-block top">Introduction / Instructions <span style="font-weight:400;color:var(--fg-muted);font-size:0.7rem;">(1 question)</span></div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-block rand">Randomizer — evenly present 1 of 2 groups</div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-groups">
+            <div class="flow-group">
+              <div class="group-label g4">4-Option Group</div>
+              <div class="flow-sub">Set embedded data<br>Condition = 4</div>
+              <div class="flow-sub">Show Block: 4-option condition (3 Qs)</div>
+            </div>
+            <div class="flow-group">
+              <div class="group-label g16">16-Option Group</div>
+              <div class="flow-sub">Set embedded data<br>Condition = 16</div>
+              <div class="flow-sub">Show Block: 16-option condition (3 Qs)</div>
+            </div>
+          </div>
+          <div class="flow-arrow">↓</div>
+          <div class="flow-block bot">Follow-up Questions <span style="font-weight:400;color:var(--fg-muted);font-size:0.7rem;">(2 questions)</span></div>
+        </div>
+        <p class="flow-note">Decision time captured by Qualtrics page timing (first click to page submit). Embedded data tagged each response with the assigned condition for automatic routing and downstream analysis.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- PIPELINE -->
+  <div class="section">
+    <div class="section-label">Data Pipeline</div>
+    <div class="pipeline">
+      <div class="pipe-step">Qualtrics<span>74 raw responses</span></div>
+      <div class="pipe-arr">→</div>
+      <div class="pipe-step">Excel<span>IQR outlier flagging</span></div>
+      <div class="pipe-arr">→</div>
+      <div class="pipe-step">CSV<span>71 clean rows</span></div>
+      <div class="pipe-arr">→</div>
+      <div class="pipe-step">R / R Markdown<span>5 tests · 5 charts</span></div>
+      <div class="pipe-arr">→</div>
+      <div class="pipe-step">HTML Report<span>Reproducible output</span></div>
+    </div>
+    <p class="pipe-note">Three decision-time observations were flagged and removed using the 1.5 × IQR upper fence before any analysis ran. The same cleaned dataset (36 in the 4-option group, 35 in the 16-option group) was used for all summaries, graphs, and statistical tests.</p>
+  </div>
+
+  <!-- ANALYSIS -->
+  <div class="section">
+    <div class="section-label">Statistical Analysis</div>
+    <div class="analysis-list">
+
+      <div class="aitem sig">
+        <div>
+          <div class="aname">Decision Time</div>
+          <div class="atest">Welch two-sample t-test · one-sided: μ₁₆ > μ₄</div>
+          <div class="awhy">Outcome is continuous; groups are independent; hypothesis is directional. Welch's variant does not assume equal population variances.</div>
+        </div>
+        <div class="aside">
+          <div class="aside-stat">t ≈ 4.80</div>
+          <span class="badge yes">Significant</span>
+        </div>
+      </div>
+
+      <div class="aitem sig">
+        <div>
+          <div class="aname">Decision Time (confirmation)</div>
+          <div class="atest">One-way ANOVA / F-test · two-sided</div>
+          <div class="awhy">Required by course design. F-statistic compares between-group variance to within-group variance. Two-sided — directional inference comes from the t-test above.</div>
+        </div>
+        <div class="aside">
+          <div class="aside-stat">F ≈ 23.55</div>
+          <span class="badge yes">Significant</span>
+        </div>
+      </div>
+
+      <div class="aitem">
+        <div>
+          <div class="aname">Purchase Rate</div>
+          <div class="atest">Two-proportion z-test · one-sided: p₄ > p₁₆</div>
+          <div class="awhy">Binary outcome (purchased / walked away). Tests whether the 4-option group produced a higher purchase proportion. Observed direction was opposite the prediction (91.4% vs 77.8%).</div>
+        </div>
+        <div class="aside">
+          <div class="aside-stat">p > .05</div>
+          <span class="badge no">Not significant</span>
+        </div>
+      </div>
+
+      <div class="aitem">
+        <div>
+          <div class="aname">Satisfaction &amp; Confidence</div>
+          <div class="atest">Mann-Whitney U test (Wilcoxon rank-sum) · one-sided</div>
+          <div class="awhy">Ordinal Likert outcomes. Non-parametric test compares the relative ranking of responses without assuming normality or equal variance.</div>
+        </div>
+        <div class="aside">
+          <div class="aside-stat">p > .05</div>
+          <span class="badge no">Not significant</span>
+        </div>
+      </div>
+
+      <div class="aitem">
+        <div>
+          <div class="aname">Post-Choice Regret</div>
+          <div class="atest">Mann-Whitney U test · purchasers only</div>
+          <div class="awhy">Ordinal Likert outcome, measured only among participants who made a purchase. Non-purchasers excluded by design. Observed regret was not higher in the 16-option group.</div>
+        </div>
+        <div class="aside">
+          <div class="aside-stat">p > .05</div>
+          <span class="badge no">Not significant</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- FINDING -->
+  <div class="section">
+    <div class="section-label">Key Finding</div>
+    <div class="finding">
+      <div class="finding-stat">19.5 sec &nbsp;vs&nbsp; 10.2 sec</div>
+      <p>Participants shown 16 options took nearly twice as long to decide as those shown 4 options — a statistically significant difference confirmed by both the Welch t-test (t ≈ 4.80, p &lt; .001) and the one-way ANOVA (F ≈ 23.55, p &lt; .001) at α = 0.05.</p>
+    </div>
+    <p class="finding-sub">No significant differences were found in purchase rate, satisfaction, confidence, or regret. The study supports the cognitive cost of more choices — people needed more time — but did not find evidence of the emotional downsides the Paradox of Choice theory predicts. The data suggest assortment size affects deliberation speed without undermining the purchase experience in this setting.</p>
+  </div>
+
+  <!-- CONTRIBUTIONS -->
+  <div class="section">
+    <div class="section-label">My Contributions</div>
+    <ul class="contrib-list">
+      <li>
+        <span class="cbullet"></span>
+        <span>Built and configured the Qualtrics survey: Randomizer block for equal random assignment, embedded data fields (Condition = 4 / 16) for routing, and automated page timing to capture decision speed without self-report bias</span>
+      </li>
+      <li>
+        <span class="cbullet"></span>
+        <span>Cleaned the raw 74-row export in Excel; applied the 1.5 × IQR upper fence to flag three extreme decision-time observations and produced the 71-row analysis dataset</span>
+      </li>
+      <li>
+        <span class="cbullet"></span>
+        <span>Contributed to the statistical analysis in R — data wrangling with dplyr, five charts with ggplot2, and a reproducible combined code-and-narrative report in R Markdown knitted to HTML</span>
+      </li>
+      <li>
+        <span class="cbullet"></span>
+        <span>Presented the experimental design, response variables, hypotheses, and statistical methods (slides 3–4) to a graduate-level audience</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- TOOLS -->
+  <div class="section">
+    <div class="section-label">Tools &amp; Skills</div>
+    <div class="tools">
+      <span class="tool">Qualtrics</span>
+      <span class="tool">R</span>
+      <span class="tool">R Markdown</span>
+      <span class="tool">dplyr</span>
+      <span class="tool">ggplot2</span>
+      <span class="tool">Excel</span>
+      <span class="tool">Experimental Design</span>
+      <span class="tool">Welch t-test</span>
+      <span class="tool">One-way ANOVA</span>
+      <span class="tool">Mann-Whitney U</span>
+      <span class="tool">Two-proportion z-test</span>
+      <span class="tool">IQR Outlier Detection</span>
+      <span class="tool">Reproducible Analysis</span>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <span>Quudus Oladosu · MS Business Analytics, Temple University</span>
+    <span>Team: Stephanie Williames · Shah Md Taskin · Sheena Huang</span>
+  </footer>
+
+</div>
